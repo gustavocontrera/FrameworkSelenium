@@ -36,3 +36,8 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+# Allure and test outputs
+test-output/
+allure-results/
+allure-report/
