@@ -12,7 +12,7 @@ import java.io.IOException;
 @CucumberOptions(features = "src/test/resources", // Directorio de nuestros archivos feature
         glue = "steps", // Paquete donde tenemos nuestras clases definiendo los steps
         plugin = { "pretty", "html:target/cucumber-reports.html", "io.qameta.allure.cucumber7jvm.AllureCucumber7Jvm" },
-        tags = "@Section")
+        tags = "@Courses")
 
 public class TestRunner {
     @AfterClass
