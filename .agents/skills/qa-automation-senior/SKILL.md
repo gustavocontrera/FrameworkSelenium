@@ -1,18 +1,49 @@
-# Skill: QA Automation Senior
+# Skill: QA Automation Senior (Java, Selenium, Cucumber, TestNG & Architecture Expert)
 
 ## Propósito
-Esta habilidad define las directrices arquitectónicas, mejores prácticas y lineamientos de automatización que debes seguir cuando trabajes en este proyecto, asegurando que las soluciones propuestas sean robustas, escalables y mantenibles.
+Esta habilidad define las directrices arquitectónicas, mejores prácticas de programación y estándares avanzados de automatización que el rol de **QA Automation Senior** debe aplicar al diseñar, refactorizar, implementar y mantener el código del framework en Java.
 
-## Principios Fundamentales
-1. **Mentoría Activa Extrema:** NUNCA escribas, crees o modifiques los archivos del framework por tu cuenta (a menos que estén dentro de la carpeta `.agents/`). Limítate exclusivamente a sugerir ideas, proveer fragmentos de código y explicar cómo implementarlos, de modo que el usuario sea quien haga todo el trabajo manualmente para fomentar su aprendizaje. No hagas el trabajo por el usuario.
-2. **Abstracción Limpia (POM):** Nunca declares localizadores Web (`By.xpath`, etc.) ni interactúes directamente con el `driver` en los archivos Step Definition de Cucumber. Toda interacción web DEBE ocurrir a través de las clases Page Object.
-3. **Mantenibilidad:** Evita a toda costa los variables en duro (hardcoding) dentro de Page Objects y Steps. URL, tiempos de espera, credenciales e IDs de base de datos deben alojarse de forma centralizada (ej: `config.properties`).
-4. **Resiliencia (Waits):** Prioriza esperas explícitas (Explicit Waits) a través de `WebDriverWait`. Únicamente utiliza configuraciones genéricas (como Implicit Waits) cuando el diseño de una red/arquitectura antigua te fuerce a ello. Nunca recomiendes `Thread.sleep()`.
-5. **Herramientas Personalizadas:** Considera siempre que tu carpeta `src/test/java/varios` existe; el usuario la mantendrá intacta con código de prueba local y experimental. Mantén su espacio separado de nuestro código principal.
-6. **Reportes Robustos:** Al sugerir estrategias de aserciones masivas usa "SoftAsserts". Si una prueba de UI falla, incita siempre a configurar un Hook de Cucumber (en `@After`) para capturar la pantalla y añadir el reporte al HTML.
+---
 
-## Convenciones de IA (Obligatorias)
-Para mantener trazabilidad fuera de nuestra sesión de chat, siempre que generes documentación funcional (`implementation_plan.md` o `walkthrough.md`), deberás:
-- Exportar una copia al directorio `.agents/logs/`.
-- Nomenclatura exacta a usar: `YYYY-MM-DD_Nombre-Tarea_Plan.md` y `YYYY-MM-DD_Nombre-Tarea_Walkthrough.md`.
-- Ver a este sitio como nuestro "diario de ingeniería" para consultar en un futuro el progreso o decisión arquitectónica elaborada.
+## Principios Fundamentales y Estándares de Código
+
+### 1. Arquitectura Page Object Model (POM) y Limpieza
+- **Aislamiento de Locators:** Los localizadores de elementos web (`By` o `String` XPath) DEBEN ser privados e ingresar únicamente dentro de las clases Page Object (`pages/`).
+- **Paginación Agnóstica:** Ninguna clase Page Object debe importar librerías de prueba (Cucumber o TestNG) ni realizar aserciones de prueba directas.
+- **Paso Limpio en Steps:** Los archivos Step Definition (`steps/`) y clases de prueba (`tests/`) interactúan con la aplicación EXCLUSIVAMENTE llamando a métodos de las clases Page Object. Jamás deben invocar `driver.findElement()` ni usar `By.*` directamente.
+
+### 2. Gestión de WebDriver Segura para Hilos (Thread-Safety)
+- **Instanciación:** Toda obtención y gestión de `WebDriver` debe canalizarse a través de un gestor de hilos (`ThreadLocal<WebDriver>`) como `DriverManager.java`.
+- **Prohibido Drivers Estáticos:** Nunca declarar el `WebDriver` como variable estática global mutable entre clases.
+- **Navegadores Dinámicos:** Utilizar `WebDriverManager` para la descarga automática del driver según el navegador configurado (`config.properties`), evitando ejecutables `.exe` en disco.
+
+### 3. Flexibilidad y Resiliencia en Localizadores y Esperas
+- **Objeto `By`:** Priorizar el uso de identificadores estables (`By.id()`, `By.name()`, `By.cssSelector()`) sobre XPaths absolutos o frágiles.
+- **Esperas Explícitas:** Usar siempre esperas explícitas mediante `WebDriverWait` y `ExpectedConditions`. 
+- **REGLA DE ORO:** Está estrictamente PROHIBIDO el uso de esperas fijas (`Thread.sleep()`).
+
+### 4. Centralización de Configuraciones y Cero Hardcoding
+- URLs de ambiente, timeouts, navegadores y parámetros del sistema deben alojarse en `config.properties` y consumirse a través de `ConfigReader.java`.
+- Datos de prueba dinámicos o complejos deben ser leídos desde los archivos de la carpeta `dataloader/` (`.csv`, `.xlsx`).
+
+### 5. Documentación Explicativa de Código (JavaDoc Obligatorio)
+- Todos los métodos creados o modificados en las clases del framework (`BasePage`, `Pages`, `Utils`, `Steps`, `Tests`) deben contar con documentación **JavaDoc detallada en español** que explique:
+  - Propósito general de la función.
+  - Parámetros recibidos (`@param`).
+  - Valor de retorno (`@return`), si aplica.
+
+### 6. Control del Ciclo de Vida y Reportes (Cucumber & TestNG)
+- Configurar `Hooks.java` (`@Before` y `@After`) para controlar el encendido/cierre de navegadores por escenario BDD.
+- En caso de fallas en pruebas UI, capturar la pantalla (`TakesScreenshot`) e incrustarla automáticamente en los reportes de Cucumber y Allure Framework.
+- Para ejecuciones masivas o múltiples comprobaciones por pantalla, promover el uso de `SoftAssert` de TestNG ejecutando `assertAll()` al finalizar.
+
+### 7. Respeto a Carpetas Locales
+- Mantener la carpeta `src/test/java/varios` aislada como espacio experimental del usuario, no alterando sus utilidades a menos que se solicite explícitamente.
+
+---
+
+## Convenciones de Trazabilidad (Obligatorias)
+Para mantener trazabilidad fuera del contexto efímero de la sesión:
+- Al generar planes de implementación o walkthroughs, exportar siempre una copia al directorio `.agents/logs/`.
+- Nomenclatura: `YYYY-MM-DD_Nombre-Tarea_Plan.md` y `YYYY-MM-DD_Nombre-Tarea_Walkthrough.md`.
+- Mantener actualizado el archivo `CONVERSATION_HISTORY.md` en `.agents/logs/` con decisiones arquitectónicas clave.
