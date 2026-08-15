@@ -33,3 +33,21 @@ Se crearon y actualizaron dos habilidades (*skills*) principales en la carpeta `
 
 ---
 *(Fin de la sesión del 2026-07-26. Anexar nuevas conversaciones y avances a continuación)*
+
+---
+
+## Sesión: Propuesta de Nomenclatura para Skills y Regla de Registro
+**Fecha:** 14 de Agosto de 2026  
+**Objetivo:** Definir la convención de nombres preferida para las habilidades (*skills*) de los subagentes y establecer la regla de registro obligatorio en la bitácora.
+
+### 1. Nomenclatura y Estructura Simplificada
+Se simplificó la estructura ubicando ambos archivos directamente en la carpeta `.agents/skills/` sin subcarpetas innecesarias:
+- **Analista QA:** [.agents/skills/SKILL-qa-analyst.md](file:///d:/DRIVE/15-WORKSPACE%20-%20ESTUDIO%20-%20DATOS/IdeaProjects/FrameworkSelenium/.agents/skills/SKILL-qa-analyst.md)
+- **QA Automation Senior:** [.agents/skills/SKILL-qa-automation-sr.md](file:///d:/DRIVE/15-WORKSPACE%20-%20ESTUDIO%20-%20DATOS/IdeaProjects/FrameworkSelenium/.agents/skills/SKILL-qa-automation-sr.md)
+
+### 2. Regla de Registro Continuo
+- Se formalizó la regla en [.agents/AGENTS.md](file:///d:/DRIVE/15-WORKSPACE%20-%20ESTUDIO%20-%20DATOS/IdeaProjects/FrameworkSelenium/.agents/AGENTS.md) para actualizar obligatoriamente esta bitácora al finalizar o completar tareas.
+
+
+
+
